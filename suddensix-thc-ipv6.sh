@@ -239,7 +239,7 @@ function startFakeRouter {
     while true
     do
 	echo "restarting router"
-	atk6-fake_router26 ${DINTERFACE} -E D -A ${DEFAULT6PREFIX}:/${DIP6CIDR} -F other -D ${DIP6} -d 30
+	atk6-fake_router26 ${DINTERFACE} -E H -A ${DEFAULT6PREFIX}:/${DIP6CIDR} -F other -D ${DIP6} -d 30
 	sleep 3
     done
 }
