@@ -263,7 +263,7 @@ function serviceStatusCheck {
 echo "Welcome, I'll install a few packages and ask a couple of questions first"
 installPrereqDpkgs
 # Prompt for network interface to use
-read -p "Please enter the interface name to listen on (default ${DINTERFACE}): " DINTERFACE
+read -p "Please enter the interface name to listen on (default ${DINTERFACEDEFAULT}): " DINTERFACE
 if [ -z "$DINTERFACE" ]
 then
     #DINTERFACE interface to listen on by default
