@@ -209,7 +209,7 @@ function isPkgInstalled {
 function installPrereqDpkgs {
     /usr/bin/apt-get install -y sipcalc tayga radvd wide-dhcpv6-server bind9 iptables
 }
-#Set up Taya interface, IP addresses and routes, and and start Tayga
+#Set up Tayga interface, IP addresses and routes, and and start Tayga
 function startTayga {
     # Set up interfaces
     ip addr add "${DIP6}/${DIP6CIDR}" dev $DINTERFACE
@@ -229,6 +229,14 @@ function startTayga {
 function stopTayga {
     ip link set $TAYGAINTERFACE down
     /usr/sbin/tayga --rmtun
+}
+function serviceStatusCheck {
+    #Array of services to check
+    SERVICES=(bind9 radvd wide-dhcpv6-server tayga)
+    for item in ${SERVICES[*]}
+    do
+        systemctl status $item | grep Active:
+    done
 }
 
 #EXECUTION
@@ -273,7 +281,7 @@ if startTayga; then
     service wide-dhcpv6-server restart
     #More non-persistent configuration
     setIpTablesForwarding
-
+    serviceStatusCheck
     echo "I'm ready."
 else
     echo "Failed to start NAT64"
