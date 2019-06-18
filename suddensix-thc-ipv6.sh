@@ -239,7 +239,7 @@ function startFakeRouter {
     while true
     do
 	echo "restarting router"
-	atk6-fake_router26 ${DINTERFACE} -E o -A ${DEFAULT6PREFIX}:/${DIP6CIDR} -F other -D ${DIP6} -d 30
+	atk6-fake_router26 ${DINTERFACE} -E O -A ${DEFAULT6PREFIX}:/${DIP6CIDR} -F other -D ${DIP6} -d 30
 	sleep 3
     done
 }
@@ -272,7 +272,7 @@ fi
 echo "This is your current address information: "
 sipcalc $DINTERFACE
 # Prompt for thc-ipv6 use
-read -p "Use fake_router26 from thc-ipv6 to attempt full RA Guard evasion [Y/n]? "
+read -p "Use fake_router26 from thc-ipv6 to attempt RA Guard evasion [Y/n]? "
 if [[ $REPLY =~ [Yy] ]] || [ -z "$REPLY" ]
 then
     THC=true
