@@ -32,6 +32,8 @@ TAYGA6IP="${DEFAULT6PREFIX}:3" #i.e. 64:FF9B::3
 TAYGA4SUBNET="192.168.255.0/24"
 #TAYGA4IP default IPv4 address for tayga virtual interface, it should be within TAYGA4SUBNET
 TAYGA4IP="192.168.255.1"
+#DINTERFACEDEFAULT default interface to listen on, we'll prompt for it later
+DINTERFACEDEFAULT="eth0"
 #DSECONDIP second "Legitimate" IPv4 address to prompt for, assuming an actual DHCPv4 lease is the first. This will be assigned to the tayga nat64 interface for NAT-ing
 DSECONDIP=""
 #NAMESERVERS existing IPv4 DNS servers, this should be replaced with the internal DNSv4 servers from DHCP
@@ -242,7 +244,7 @@ read -p "Please enter the interface name to listen on (default ${DINTERFACE}): "
 if [ -z "$DINTERFACE" ]
 then
     #DINTERFACE interface to listen on by default
-    DINTERFACE="eth0"
+    DINTERFACE=$DINTERFACEDEFAULT
 fi
 echo "This is your current address information: "
 sipcalc $DINTERFACE
